@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Use a UIHostingController as window root view controller
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: ContentView())
+        window.rootViewController = UIHostingController(rootView: TaskViewer().environmentObject(TaskStore.getInstance()))
         self.window = window
         window.makeKeyAndVisible()
     }
@@ -46,12 +46,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        if let savedTasks = UserDefaults.standard.object(forKey: "SavedTasks") as? Data {
+            let tasks:[Task] = load(savedTasks)
+            TaskStore.getInstance().setTasks(tasks: tasks)
+        }
+    }
+    
+    func load<T: Decodable>(_ data: Data, as type: T.Type = T.self) -> T {
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            fatalError("Couldn't parse as \(T.self):\n\(error)")
+        }
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(TaskStore.getInstance().tasks) {
+            let defaults = UserDefaults.standard
+            defaults.set(encoded, forKey: "SavedTasks")
+        }
     }
 
 
