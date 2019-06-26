@@ -27,7 +27,8 @@ struct TaskList : View {
             }
             .onDelete(perform: delete(at:))
             .onMove(perform: move(from:to:))
-        }.animation(.basic())
+        }
+        .animation(.basic())
        
     }
     

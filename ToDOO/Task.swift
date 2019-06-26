@@ -13,11 +13,19 @@ struct Task: Identifiable, Codable {
     var isFinished: Bool
     var dateAdded: Date? = nil
     var id:Int
+    var priority: Priority
     
-    init(title: String, isFinished: Bool, id:Int, dateAdded: Date? = nil) {
+    enum Priority:String, Codable {
+        case low = "low"
+        case normal = "normal"
+        case high = "high"
+    }
+    
+    init(title: String, isFinished: Bool, id:Int, dateAdded: Date? = nil, priority: Priority = Priority.normal) {
         self.title = title
         self.isFinished = isFinished
         self.id = id
         self.dateAdded = dateAdded
+        self.priority = priority
     }
 }

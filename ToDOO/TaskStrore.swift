@@ -26,9 +26,9 @@ class TaskStore: BindableObject {
     
     private init() {
         #if DEBUG
-        tasks.append(Task(title: "Task Uno", isFinished: false, id: 1))
-        tasks.append(Task(title: "Task Dos", isFinished: true, id: 2))
-        tasks.append(Task(title: "Task Tres", isFinished: false, id: 3))
+        tasks.append(Task(title: "Task Uno", isFinished: false, id: 1, priority: Task.Priority.low))
+        tasks.append(Task(title: "Task Dos", isFinished: true, id: 2, priority: Task.Priority.high))
+        tasks.append(Task(title: "Task Tres", isFinished: false, id: 3, priority: Task.Priority.normal))
         #endif
     }
 
