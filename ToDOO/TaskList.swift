@@ -12,7 +12,7 @@ struct TaskList : View {
     @EnvironmentObject var taskStore: TaskStore
     @State var newTaskDescription: String = ""
     var body: some View {
-        List{
+        VStack{
             HStack{
                 TextField(self.$newTaskDescription, placeholder: Text("New task description"))
                 Button(action: {
@@ -22,11 +22,17 @@ struct TaskList : View {
                     Text("Add")
                 }
             }
-            ForEach(self.taskStore.tasks){ task in
-                TaskCell(task: task)
+            GeometryReader { geometry in
+                ScrollView{
+                    ForEach(self.taskStore.tasks){ task in
+                        TaskCell(task: task)
+                            .frame(width: geometry.frame(in: .local).width)
+                    }
+                    .onDelete(perform: self.delete(at:))
+                    .onMove(perform: self.move(from:to:))
             }
-            .onDelete(perform: delete(at:))
-            .onMove(perform: move(from:to:))
+        }
+            
         }
         .animation(.basic())
        

@@ -15,6 +15,7 @@ struct TaskViewer : View {
             TaskList()
             .navigationBarTitle(Text("Tasks"))
             .navigationBarItems(trailing: EditButton())
+            .padding()
         }
     }
 }
